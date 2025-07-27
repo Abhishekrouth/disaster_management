@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Beaches in {{ country }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Beaches in {{ country }}</h2>
+
+        {% if beaches %}
+            <form action="/check_alert" method="POST">
+                <label for="beach">Select Beach:</label>
+                <select name="beach" id="beach" required>
+                    {% for beach in beaches %}
+                        <option value="{{ beach.name }}">{{ beach.name }}</option>
+                    {% endfor %}
+                </select>
+
+                <!-- Hidden lat/lon input -->
+                <input type="hidden" name="lat" value="{{ beaches[0].lat }}">
+                <input type="hidden" name="lon" value="{{ beaches[0].lon }}">
+
+                <button type="submit">Check Safety</button>
+            </form>
+        {% else %}
+            <p style="color:red;"> No beaches found. Gemini API may have failed or returned empty results.</p>
+            <a href="/">⏪ Go back and try another country</a>
+        {% endif %}
+
+    </div>
+</body>
+</html>
